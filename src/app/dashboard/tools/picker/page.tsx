@@ -29,56 +29,62 @@ export default function StudentPickerPage() {
   useEffect(() => {
     if (!selectedStudent) return;
 
-    // Card flip name
-    if (nameRef.current && cardRef.current) {
-      const span = nameRef.current;
-      const container = cardRef.current;
-      span.style.fontSize = ''; // reset
-      
-      // Calculate available width (container width minus padding)
-      const available = container.clientWidth - 64; // subtract px-8 padding (2 * 32px)
-      
-      // Start with max font size and reduce if needed
-      let fontSize = 96;
-      span.style.fontSize = `${fontSize}px`;
-      
-      // Keep reducing font size until text fits or reaches minimum
-      while (span.scrollWidth > available && fontSize > 16) {
-        fontSize -= 3;
+    // Use requestAnimationFrame to ensure DOM has rendered
+    const animationFrameId = requestAnimationFrame(() => {
+      // Card flip name
+      if (nameRef.current && cardRef.current) {
+        const span = nameRef.current;
+        const container = cardRef.current;
+        
+        // Calculate available width (container width minus padding)
+        const available = container.clientWidth - 64; // subtract px-8 padding (2 * 32px)
+        
+        // Start with max font size and reduce if needed
+        let fontSize = 96;
         span.style.fontSize = `${fontSize}px`;
+        
+        // Keep reducing font size until text fits or reaches minimum
+        let attempts = 0;
+        while (span.scrollWidth > available && fontSize > 16 && attempts < 30) {
+          fontSize -= 2;
+          span.style.fontSize = `${fontSize}px`;
+          attempts++;
+        }
+        
+        // Ensure minimum readability
+        if (fontSize < 16) {
+          span.style.fontSize = '16px';
+        }
       }
-      
-      // Ensure minimum readability
-      if (fontSize < 16) {
-        span.style.fontSize = '16px';
-      }
-    }
 
-    // Roulette name
-    if (rouletteNameRef.current) {
-      const div = rouletteNameRef.current;
-      const container = div.parentElement?.parentElement; // Get the roulette container
-      if (!container) return;
-      
-      div.style.fontSize = '';
-      
-      // Calculate available width
-      const available = container.clientWidth - 48; // subtract px-6 padding (2 * 24px)
-      
-      let fontSize = 80;
-      div.style.fontSize = `${fontSize}px`;
-      
-      // Keep reducing font size until text fits
-      while (div.scrollWidth > available && fontSize > 16) {
-        fontSize -= 3;
+      // Roulette name
+      if (rouletteNameRef.current) {
+        const div = rouletteNameRef.current;
+        const container = div.parentElement?.parentElement; // Get the roulette container
+        if (!container) return;
+        
+        // Calculate available width
+        const available = container.clientWidth - 48; // subtract px-6 padding (2 * 24px)
+        
+        let fontSize = 80;
         div.style.fontSize = `${fontSize}px`;
+        
+        // Keep reducing font size until text fits
+        let attempts = 0;
+        while (div.scrollWidth > available && fontSize > 16 && attempts < 30) {
+          fontSize -= 2;
+          div.style.fontSize = `${fontSize}px`;
+          attempts++;
+        }
+        
+        // Ensure minimum readability
+        if (fontSize < 16) {
+          div.style.fontSize = '16px';
+        }
       }
-      
-      // Ensure minimum readability
-      if (fontSize < 16) {
-        div.style.fontSize = '16px';
-      }
-    }
+    });
+
+    return () => cancelAnimationFrame(animationFrameId);
   }, [selectedStudent, isFullscreen]);
 
   // Sync state when exiting fullscreen via ESC key
