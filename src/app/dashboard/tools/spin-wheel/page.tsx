@@ -169,12 +169,7 @@ export default function SpinWheelPage() {
 
   const removeAllOptions = () => {
     if (confirm("Clear all items from the wheel? This cannot be undone.")) {
-      setOptions([
-        { id: "1", label: "Choose the game", color: DEFAULT_COLORS[0] },
-        { id: "2", label: "Candy!", color: DEFAULT_COLORS[1] },
-        { id: "3", label: "No homework pass", color: DEFAULT_COLORS[2] },
-        { id: "4", label: "Extra 5 mins recess", color: DEFAULT_COLORS[3] },
-      ]);
+      setOptions([]);
       setWinner(null);
     }
   };
