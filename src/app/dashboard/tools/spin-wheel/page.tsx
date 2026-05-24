@@ -164,10 +164,6 @@ export default function SpinWheelPage() {
   };
 
   const removeOption = (id: string) => {
-    if (options.length <= 1) {
-      alert("The wheel must have at least 1 option.");
-      return;
-    }
     setOptions(options.filter(o => o.id !== id));
   };
 
@@ -415,21 +411,22 @@ export default function SpinWheelPage() {
               className="w-full h-full rounded-full overflow-hidden shadow-2xl border-4 border-slate-100 relative"
             >
               <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-                {options.length === 1 ? (
+                {options.length === 0 ? (
                   <g>
-                    <circle cx="50" cy="50" r="50" fill={options[0].color} />
+                    <circle cx="50" cy="50" r="50" fill="#e2e8f0" />
                     <text 
                       x="50" 
                       y="50" 
-                      fill="white" 
-                      fontSize="5" 
+                      fill="#94a3b8" 
+                      fontSize="6" 
                       fontWeight="bold" 
                       textAnchor="middle" 
                       dominantBaseline="middle"
                     >
-                      {options[0].label}
+                      No Items
                     </text>
                   </g>
+
                 ) : (
                   options.map((opt, i) => {
                     const sliceAngle = 360 / options.length;
@@ -482,7 +479,7 @@ export default function SpinWheelPage() {
             className={`mt-10 bg-gradient-to-r from-rose-500 to-red-500 text-white px-8 py-3 rounded-full font-bold text-lg tracking-wide uppercase transition-all shadow-xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 flex items-center space-x-3 shadow-rose-500/30 ${isFullscreen ? 'scale-110' : ''}`}
           >
             <Play className="w-4 h-4 fill-current" />
-            <span>Spin Wheel</span>
+            <span>{options.length === 0 ? 'Add Items to Spin' : 'Spin Wheel'}</span>
           </button>
         </div>
       </div>
