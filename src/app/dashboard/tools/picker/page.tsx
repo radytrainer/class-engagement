@@ -34,27 +34,49 @@ export default function StudentPickerPage() {
       const span = nameRef.current;
       const container = cardRef.current;
       span.style.fontSize = ''; // reset
-      const available = container.clientWidth - 64; // subtract px-8 padding
-      let fontSize = 96; // start at 96px
+      
+      // Calculate available width (container width minus padding)
+      const available = container.clientWidth - 64; // subtract px-8 padding (2 * 32px)
+      
+      // Start with max font size and reduce if needed
+      let fontSize = 96;
       span.style.fontSize = `${fontSize}px`;
-      while (span.scrollWidth > available && fontSize > 12) {
-        fontSize -= 2;
+      
+      // Keep reducing font size until text fits or reaches minimum
+      while (span.scrollWidth > available && fontSize > 16) {
+        fontSize -= 3;
         span.style.fontSize = `${fontSize}px`;
+      }
+      
+      // Ensure minimum readability
+      if (fontSize < 16) {
+        span.style.fontSize = '16px';
       }
     }
 
     // Roulette name
     if (rouletteNameRef.current) {
       const div = rouletteNameRef.current;
-      const container = div.parentElement;
+      const container = div.parentElement?.parentElement; // Get the roulette container
       if (!container) return;
+      
       div.style.fontSize = '';
-      const available = container.clientWidth - 48;
+      
+      // Calculate available width
+      const available = container.clientWidth - 48; // subtract px-6 padding (2 * 24px)
+      
       let fontSize = 80;
       div.style.fontSize = `${fontSize}px`;
-      while (div.scrollWidth > available && fontSize > 12) {
-        fontSize -= 2;
+      
+      // Keep reducing font size until text fits
+      while (div.scrollWidth > available && fontSize > 16) {
+        fontSize -= 3;
         div.style.fontSize = `${fontSize}px`;
+      }
+      
+      // Ensure minimum readability
+      if (fontSize < 16) {
+        div.style.fontSize = '16px';
       }
     }
   }, [selectedStudent, isFullscreen]);
@@ -262,13 +284,15 @@ export default function StudentPickerPage() {
                         animate={{ scale: 1, opacity: 1 }}
                         className={`absolute inset-0 backface-hidden rounded-3xl flex flex-col items-center justify-center shadow-2xl border-4 px-8 overflow-hidden ${isFullscreen ? 'bg-slate-800 border-purple-500 text-white' : 'bg-white border-purple-500'}`}
                       >
-                        <span 
-                          ref={nameRef}
-                          className="font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 text-center whitespace-nowrap block"
-                          style={{ fontSize: '96px', lineHeight: 1.1 }}
-                        >
-                          {selectedStudent.name}
-                        </span>
+                        <div className="flex-1 flex items-center justify-center w-full overflow-hidden">
+                          <span 
+                            ref={nameRef}
+                            className="font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 text-center break-words max-w-full"
+                            style={{ fontSize: '96px', lineHeight: 1.1, overflowWrap: 'break-word', wordBreak: 'break-word' }}
+                          >
+                            {selectedStudent.name}
+                          </span>
+                        </div>
                         <span className={`text-xl font-medium mt-3 ${isFullscreen ? 'text-slate-400' : 'text-slate-500'}`}>You&apos;ve been picked!</span>
                       </motion.div>
                     )}
@@ -294,14 +318,14 @@ export default function StudentPickerPage() {
                       ))}
                     </motion.div>
                   ) : selectedStudent ? (
-                    <div className="absolute inset-0 z-20 flex items-center justify-center px-6 pointer-events-none">
+                    <div className="absolute inset-0 z-20 flex items-center justify-center px-6 pointer-events-none overflow-hidden">
                       <motion.div
                         ref={rouletteNameRef}
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ type: "spring", bounce: 0.5 }}
-                        className="block w-full whitespace-nowrap text-center font-black leading-none text-transparent bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text"
-                        style={{ fontSize: '80px', lineHeight: 0.9 }}
+                        className="block max-w-full text-center font-black leading-none text-transparent bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text break-words"
+                        style={{ fontSize: '80px', lineHeight: 0.9, overflowWrap: 'break-word', wordBreak: 'break-word' }}
                       >
                         {selectedStudent.name}
                       </motion.div>
