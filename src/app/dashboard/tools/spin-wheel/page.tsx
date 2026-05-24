@@ -171,6 +171,18 @@ export default function SpinWheelPage() {
     setOptions(options.filter(o => o.id !== id));
   };
 
+  const removeAllOptions = () => {
+    if (confirm("Clear all items from the wheel? This cannot be undone.")) {
+      setOptions([
+        { id: "1", label: "Choose the game", color: DEFAULT_COLORS[0] },
+        { id: "2", label: "Candy!", color: DEFAULT_COLORS[1] },
+        { id: "3", label: "No homework pass", color: DEFAULT_COLORS[2] },
+        { id: "4", label: "Extra 5 mins recess", color: DEFAULT_COLORS[3] },
+      ]);
+      setWinner(null);
+    }
+  };
+
   const spinWheel = () => {
     if (isSpinning) return;
     setIsSpinning(true);
@@ -323,7 +335,15 @@ export default function SpinWheelPage() {
 
               {/* Wheel Options List */}
               <div className="mt-6 pt-6 border-t border-slate-100">
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Current Options ({options.length})</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Current Options ({options.length})</h3>
+                  <button 
+                    onClick={removeAllOptions}
+                    className="text-xs font-bold text-rose-500 hover:text-rose-600 hover:bg-rose-50 px-2 py-1 rounded transition-colors"
+                  >
+                    Clear All
+                  </button>
+                </div>
                 <ul className="space-y-2 max-h-48 overflow-y-auto pr-2">
                   {options.map((opt) => (
                     <li key={opt.id} className="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-100 rounded-xl">
