@@ -287,8 +287,8 @@ export default function StudentPickerPage() {
                         <div className="flex-1 flex items-center justify-center w-full overflow-hidden">
                           <span 
                             ref={nameRef}
-                            className="font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 text-center break-words max-w-full"
-                            style={{ fontSize: '96px', lineHeight: 1.1, overflowWrap: 'break-word', wordBreak: 'break-word' }}
+                            className="font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 text-center whitespace-nowrap block"
+                            style={{ fontSize: '96px', lineHeight: 1.1 }}
                           >
                             {selectedStudent.name}
                           </span>
@@ -324,8 +324,8 @@ export default function StudentPickerPage() {
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ type: "spring", bounce: 0.5 }}
-                        className="block max-w-full text-center font-black leading-none text-transparent bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text break-words"
-                        style={{ fontSize: '80px', lineHeight: 0.9, overflowWrap: 'break-word', wordBreak: 'break-word' }}
+                        className="block whitespace-nowrap text-center font-black leading-none text-transparent bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text"
+                        style={{ fontSize: '80px', lineHeight: 0.9 }}
                       >
                         {selectedStudent.name}
                       </motion.div>
