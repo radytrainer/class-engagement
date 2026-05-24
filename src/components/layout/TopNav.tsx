@@ -25,7 +25,7 @@ const TopNav = () => {
               <Sparkles className="text-white w-5 h-5" />
             </div>
             <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-orange-600">
-              ClassSpark
+              PNC Classroom Tools
             </span>
           </Link>
           <div className="hidden sm:flex items-center space-x-2 bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-full border border-emerald-200">
