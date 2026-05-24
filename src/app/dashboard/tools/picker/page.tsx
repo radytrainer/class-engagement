@@ -39,8 +39,8 @@ export default function StudentPickerPage() {
         // Calculate available width (container width minus padding)
         const available = container.clientWidth - 64; // subtract px-8 padding (2 * 32px)
         
-        // Start with max font size and reduce if needed
-        let fontSize = 96;
+        // Start with smaller max font size for card flip
+        let fontSize = 56;
         span.style.fontSize = `${fontSize}px`;
         
         // Keep reducing font size until text fits or reaches minimum
