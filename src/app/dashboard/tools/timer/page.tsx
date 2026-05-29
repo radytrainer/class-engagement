@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, RotateCcw, Maximize, Minimize, Settings, Rocket, Flag, Bomb, Bell } from "lucide-react";
+import FireParticles from "@/components/FireParticles";
 
 type TimerMode = "countdown" | "stopwatch" | "pomodoro" | "competition";
 type Theme = "rocket" | "race" | "bomb" | "school_bell";
@@ -202,6 +203,10 @@ export default function TimerPage() {
   const currentTheme = themeStyles[theme];
   const ThemeIcon = currentTheme.icon;
 
+  const showFire = isActive && (mode === "countdown" || mode === "competition") && initialTime > 0;
+  const fireIntensity = showFire ? 1 - time / initialTime : 0;
+  const isExplosive = showFire && time <= 10;
+
   return (
     <div className={`mx-auto flex flex-col ${isFullscreen ? 'fixed inset-0 z-50 bg-slate-900 p-8' : 'max-w-6xl space-y-8'}`}>
 
@@ -309,6 +314,13 @@ export default function TimerPage() {
           <div className={`relative flex items-center justify-center group w-full aspect-square ${isFullscreen ? 'max-w-[78vh]' : 'max-w-sm md:max-w-md'}`}>
             {/* Animated Progress Circle */}
             <svg className="absolute inset-0 w-full h-full -rotate-90 transform drop-shadow-xl" viewBox="0 0 100 100">
+              {/* Glow filter */}
+              <defs>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+                </filter>
+              </defs>
+
               {/* Background Circle */}
               <circle
                 cx="50" cy="50" r="45"
@@ -316,6 +328,22 @@ export default function TimerPage() {
                 stroke={isFullscreen ? '#1e293b' : '#f1f5f9'}
                 strokeWidth={isFullscreen ? "6" : "4"}
               />
+
+              {/* Glow aura ring behind progress */}
+              {isActive && (mode === "countdown" || mode === "competition") && (
+                <motion.circle
+                  cx="50" cy="50" r="45"
+                  fill="none"
+                  stroke={currentTheme.stroke}
+                  strokeWidth={isFullscreen ? "16" : "12"}
+                  strokeLinecap="round"
+                  style={{ filter: "url(#glow)", opacity: fireIntensity * 0.4 }}
+                  initial={{ strokeDasharray: 283, strokeDashoffset: 283 }}
+                  animate={{ strokeDashoffset: 283 - (283 * progressPercentage) / 100 }}
+                  transition={{ duration: 0.5, ease: "linear" }}
+                />
+              )}
+
               {/* Foreground Progress Circle */}
               <motion.circle
                 cx="50" cy="50" r="45"
@@ -328,6 +356,9 @@ export default function TimerPage() {
                 transition={{ duration: 0.5, ease: "linear" }}
               />
             </svg>
+
+            {/* Fire particles overlay */}
+            <FireParticles intensity={fireIntensity} isExplosive={isExplosive} />
 
             {/* Time Display + Controls inside circle */}
             <div className={`text-center z-10 flex flex-col items-center justify-center w-full ${isFullscreen ? 'px-4 max-w-[85%]' : 'px-8'}`}>
