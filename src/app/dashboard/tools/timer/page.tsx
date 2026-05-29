@@ -306,7 +306,7 @@ export default function TimerPage() {
         {/* Display Area */}
         <div className={`flex-1 rounded-3xl flex flex-col items-center justify-center relative overflow-hidden ${isFullscreen ? '' : 'bg-white border border-slate-100 shadow-sm min-h-[500px]'}`}>
 
-          <div className={`relative flex items-center justify-center group w-full aspect-square ${isFullscreen ? 'max-w-[60vh]' : 'max-w-sm md:max-w-md'}`}>
+          <div className={`relative flex items-center justify-center group w-full aspect-square ${isFullscreen ? 'max-w-[78vh]' : 'max-w-sm md:max-w-md'}`}>
             {/* Animated Progress Circle */}
             <svg className="absolute inset-0 w-full h-full -rotate-90 transform drop-shadow-xl" viewBox="0 0 100 100">
               {/* Background Circle */}
@@ -314,14 +314,14 @@ export default function TimerPage() {
                 cx="50" cy="50" r="45"
                 fill="none"
                 stroke={isFullscreen ? '#1e293b' : '#f1f5f9'}
-                strokeWidth="4"
+                strokeWidth={isFullscreen ? "6" : "4"}
               />
               {/* Foreground Progress Circle */}
               <motion.circle
                 cx="50" cy="50" r="45"
                 fill="none"
                 stroke={currentTheme.stroke}
-                strokeWidth="6"
+                strokeWidth={isFullscreen ? "10" : "6"}
                 strokeLinecap="round"
                 initial={{ strokeDasharray: 283, strokeDashoffset: 0 }}
                 animate={{ strokeDashoffset: 283 - (283 * progressPercentage) / 100 }}
@@ -334,48 +334,48 @@ export default function TimerPage() {
               <motion.div
                 animate={{ scale: time <= 10 && isActive && mode !== "stopwatch" ? [1, 1.05, 1] : 1 }}
                 transition={{ repeat: Infinity, duration: 1 }}
-                className={`font-black tracking-tighter tabular-nums w-full overflow-hidden ${isFullscreen ? 'text-7xl sm:text-[10rem] text-white' : 'text-6xl md:text-8xl text-slate-800'} ${time <= 10 && mode !== "stopwatch" ? 'text-rose-500' : ''}`}
+                className={`font-black tabular-nums w-full overflow-hidden ${isFullscreen ? 'text-8xl sm:text-[14rem] tracking-[0.08em] text-white' : 'text-6xl md:text-8xl tracking-tighter text-slate-800'} ${time <= 10 && mode !== "stopwatch" ? 'text-rose-500' : ''}`}
               >
                 {formatTime(time)}
               </motion.div>
-              <div className={`text-sm md:text-xl font-bold uppercase tracking-[0.2em] mt-1 md:mt-2 flex items-center justify-center space-x-2 ${currentTheme.color}`}>
-                <ThemeIcon className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                <span className="truncate text-xs md:text-base">{theme.replace('_', ' ')}</span>
+              <div className={`font-bold uppercase tracking-[0.2em] mt-2 md:mt-3 flex items-center justify-center space-x-3 ${isFullscreen ? 'text-2xl' : 'text-sm md:text-xl'} ${currentTheme.color}`}>
+                <ThemeIcon className={`shrink-0 ${isFullscreen ? 'w-6 h-6' : 'w-4 h-4 md:w-5 md:h-5'}`} />
+                <span className={`truncate ${isFullscreen ? 'text-xl' : 'text-xs md:text-base'}`}>{theme.replace('_', ' ')}</span>
               </div>
 
               {/* Controls INSIDE the circle */}
-              <div className="mt-4 md:mt-5 flex items-center justify-center space-x-3">
+              <div className={`flex items-center justify-center ${isFullscreen ? 'mt-6 space-x-5' : 'mt-4 md:mt-5 space-x-3'}`}>
                 {/* Reset button */}
                 <button
                   onClick={handleReset}
-                  className={`w-9 h-9 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all border-2 ${isFullscreen ? 'border-slate-600 text-slate-400 hover:text-white hover:border-slate-400' : 'border-slate-200 text-slate-400 hover:border-slate-400 hover:text-slate-600'}`}
+                  className={`rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all border-2 ${isFullscreen ? 'w-11 h-11 border-slate-600 text-slate-400 hover:text-white hover:border-slate-400' : 'w-9 h-9 border-slate-200 text-slate-400 hover:border-slate-400 hover:text-slate-600'}`}
                 >
-                  <RotateCcw className="w-4 h-4" />
+                  <RotateCcw className={`${isFullscreen ? 'w-5 h-5' : 'w-4 h-4'}`} />
                 </button>
 
                 {/* Play/Pause - Primary button */}
                 {isActive ? (
                   <button
                     onClick={handlePause}
-                    className={`w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-lg bg-gradient-to-br ${currentTheme.bg} text-white`}
+                    className={`rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-lg bg-gradient-to-br ${currentTheme.bg} text-white ${isFullscreen ? 'w-16 h-16' : 'w-14 h-14'}`}
                   >
-                    <Pause className="w-5 h-5 fill-current" />
+                    <Pause className={`fill-current ${isFullscreen ? 'w-6 h-6' : 'w-5 h-5'}`} />
                   </button>
                 ) : (
                   <button
                     onClick={handleStart}
-                    className={`w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-lg bg-gradient-to-br ${currentTheme.bg} text-white`}
+                    className={`rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-lg bg-gradient-to-br ${currentTheme.bg} text-white ${isFullscreen ? 'w-16 h-16' : 'w-14 h-14'}`}
                   >
-                    <Play className="w-5 h-5 fill-current ml-0.5" />
+                    <Play className={`fill-current ml-0.5 ${isFullscreen ? 'w-6 h-6' : 'w-5 h-5'}`} />
                   </button>
                 )}
 
                 {/* Fullscreen shortcut button */}
                 <button
                   onClick={toggleFullscreen}
-                  className={`w-9 h-9 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all border-2 ${isFullscreen ? 'border-slate-600 text-slate-400 hover:text-white hover:border-slate-400' : 'border-slate-200 text-slate-400 hover:border-slate-400 hover:text-slate-600'}`}
+                  className={`rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all border-2 ${isFullscreen ? 'w-11 h-11 border-slate-600 text-slate-400 hover:text-white hover:border-slate-400' : 'w-9 h-9 border-slate-200 text-slate-400 hover:border-slate-400 hover:text-slate-600'}`}
                 >
-                  {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+                  {isFullscreen ? <Minimize className={`${isFullscreen ? 'w-5 h-5' : 'w-4 h-4'}`} /> : <Maximize className="w-4 h-4" />}
                 </button>
               </div>
             </div>
