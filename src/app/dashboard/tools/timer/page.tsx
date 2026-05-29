@@ -330,11 +330,11 @@ export default function TimerPage() {
             </svg>
 
             {/* Time Display + Controls inside circle */}
-            <div className={`text-center z-10 flex flex-col items-center justify-center w-full px-8`}>
+            <div className={`text-center z-10 flex flex-col items-center justify-center w-full ${isFullscreen ? 'px-4 max-w-[85%]' : 'px-8'}`}>
               <motion.div
                 animate={{ scale: time <= 10 && isActive && mode !== "stopwatch" ? [1, 1.05, 1] : 1 }}
                 transition={{ repeat: Infinity, duration: 1 }}
-                className={`font-black tabular-nums w-full overflow-hidden ${isFullscreen ? 'text-8xl sm:text-[14rem] tracking-[0.08em] text-white' : 'text-6xl md:text-8xl tracking-tighter text-slate-800'} ${time <= 10 && mode !== "stopwatch" ? 'text-rose-500' : ''}`}
+                className={`font-black tabular-nums w-full overflow-hidden ${isFullscreen ? 'text-6xl sm:text-[10rem] tracking-[0.08em] text-white' : 'text-6xl md:text-8xl tracking-tighter text-slate-800'} ${time <= 10 && mode !== "stopwatch" ? 'text-rose-500' : ''}`}
               >
                 {formatTime(time)}
               </motion.div>
